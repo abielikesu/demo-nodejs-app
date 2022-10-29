@@ -1,12 +1,16 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
+const config = require('./config');
+
+console.log(config);
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
-    res.send('Hello from App Engine!');
+    //res.send('Hello from App Engine!');
+    res.send(config);
 });
 app.get('/submit', (req, res) => {
     res.sendFile(path.join(__dirname, '/views/form.html'));
