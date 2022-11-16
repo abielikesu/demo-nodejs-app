@@ -20,7 +20,7 @@ app.post('/submit', (req, res) => {
     name: req.body.name,
     message: req.body.message
   });
-  res.send('Thanks for your message!');
+  res.send('Hi ' + req.body.name + ', thanks for your message!');
 });
 
 // Listen to the App Engine-specified port, or 8080 otherwise
