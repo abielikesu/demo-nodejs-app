@@ -10,6 +10,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
     //res.send('Hello from App Engine!');
+    console.log(config);
     res.send(config);
 });
 app.get('/submit', (req, res) => {
