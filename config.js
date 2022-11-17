@@ -2,29 +2,35 @@ require('dotenv').config();
 const convict = require('convict');
 
 const config = convict({
+    host: {
+        format: String,
+        default: 'localhost',
+        arg: 'host',
+        env: 'HOST'
+    },
+    port: {
+        format: String,
+        default: '3032',
+        arg: 'port',
+        env: 'PORT'
+    },
     env: {
-        format: ['production', 'dev', 'test'],
+        format: ['prod', 'dev', 'test'],
         default: 'dev',
         arg: 'nodeEnv',
         env: 'NODE_ENV'
     },
-    apple: {
+    version: {
         format: String,
-        default: 'from default',
-        arg: 'apple',
-        env: 'APPLE'
+        default: 'HEAD',
+        arg: 'appVersion',
+        env: 'APP_VERSION'
     },
-    banana: {
+    title: {
         format: String,
-        default: 'from default',
-        arg: 'banana',
-        env: 'BANANA'
-    },
-    cherry: {
-        format: String,
-        default: 'from default',
-        arg: 'cherry',
-        env: 'CHERRY'
+        default: 'Demo node.js',
+        arg: 'appTitle',
+        env: 'APP_TITLE'
     }
 });
 
