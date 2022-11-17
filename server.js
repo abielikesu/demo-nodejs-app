@@ -72,6 +72,15 @@ app.post('/submit', (req, res) => {
         <p>
           Thanks for your message!
         </p>
+        <p>
+		  Message: ${req.body.message}
+        </p>
+        <p>
+		  Time: ${currdatetime}
+        </p>
+        <p>
+		  Processed by: ${HOST}
+        </p>
       </div>
       <footer>
         <p>${APP_TITLE} © ${HOST}. All rights reserved.</p>
