@@ -39,8 +39,49 @@ app.post('/submit', (req, res) => {
         },
     }
     console.log(metadata)
+    var renderText = `
+<!DOCTYPE html>
+      <html>
+  <head>
+    <title>${APP_TITLE}</title>
+    <style>
+      .header {
+        height: 40px;
+        padding: 20px 20px 0;
+        background: #e1e1e1;
+      }
+      .main-content {
+        height: 60vh;
+        padding: 20px;
+      }
+      footer {
+        padding: 10px 20px;
+        background: #666;
+        color: white;
+      }
+      a {
+        color: #00aaff;
+      }
+    </style>
+  </head>
+      <body>
+      <div class="main-content">
+        <h2>
+          Hi ${req.body.name},
+        </h2>
+        <p>
+          Thanks for your message!
+        </p>
+      </div>
+      <footer>
+        <p>${APP_TITLE} © ${HOST}. All rights reserved.</p>
+      </footer>
+      </body>
+      </html>
+    `;
 
-    res.send('Hi ' + req.body.name + ', thanks for your message!');
+   //res.send('Hi ' + req.body.name + ', thanks for your message!');
+    res.send(renderText);
 });
 
 app.listen(PORT, HOST, () => {
