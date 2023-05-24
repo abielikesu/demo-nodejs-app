@@ -31,6 +31,24 @@ const config = convict({
         default: 'Demo node.js',
         arg: 'appTitle',
         env: 'APP_TITLE'
+    },
+    dbtype: {
+        format: String,
+        default: 'none',
+        arg: 'dbtype',
+        env: 'DB_TYPE'
+    },
+    dbname: {
+        format: String,
+        default: 'demo',
+        arg: 'dbname',
+        env: 'DB_NAME'
+    },
+    dburl: {
+        format: String,
+        default: 'mongodb://localhost:27017/',
+        arg: 'dburl',
+        env: 'DB_URL'
     }
 });
 
