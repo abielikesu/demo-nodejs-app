@@ -12,23 +12,27 @@ var PORT   = config.port;
 var APP_ENV = config.env;
 var APP_VERSION   = config.version;
 var APP_TITLE   = config.title;
+
 // database
-var DB_TYPE   = config.dbtype;
-var DB_URL   = config.dburl;
-var DB_NAME   = config.dbname;
-
-console.log(`${DB_TYPE}: ${DB_URL}`);
-
 var mydb = null // global variable to hold the connection
 
-if (DB_TYPE == "mongodb") {
-    MongoClient.connect(DB_URL, {
-        connectTimeoutMS: 5000
-    }).then((conn) => {
-        console.log('Connected to MongoDB');
-        mydb = conn.db(DB_NAME);
-       // start web server
-    })
+if (APP_VERSION !== 'v1.0') {
+
+    var DB_TYPE   = config.dbtype;
+    var DB_URL   = config.dburl;
+    var DB_NAME   = config.dbname;
+
+    console.log(`${DB_TYPE}: ${DB_URL}`);
+
+    if (DB_TYPE == "mongodb") {
+        MongoClient.connect(DB_URL, {
+            connectTimeoutMS: 5000
+        }).then((conn) => {
+            console.log('Connected to MongoDB');
+            mydb = conn.db(DB_NAME);
+           // start web server
+        })
+    }
 }
 
 const app = express();
@@ -61,11 +65,6 @@ app.post('/submitdb', (req, res) => {
     }
     console.log(metadata)
 
-    // conn.db(DB_NAME).collection('messages').find({}).toArray()
-    // .then((results) => {
-        // console.log('got results', results.length);
-        // res.send(`got ${results.length} results`);
-    // });
     if (mydb == null) {
       res.send("database not available.");
       return
