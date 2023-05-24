@@ -16,23 +16,20 @@ var APP_TITLE   = config.title;
 // database
 var mydb = null // global variable to hold the connection
 
-if (APP_VERSION !== 'v1.0') {
+var DB_TYPE   = config.dbtype;
+var DB_URL   = config.dburl;
+var DB_NAME   = config.dbname;
 
-    var DB_TYPE   = config.dbtype;
-    var DB_URL   = config.dburl;
-    var DB_NAME   = config.dbname;
+console.log(`${DB_TYPE}: ${DB_URL}`);
 
-    console.log(`${DB_TYPE}: ${DB_URL}`);
-
-    if (DB_TYPE == "mongodb") {
-        MongoClient.connect(DB_URL, {
-            connectTimeoutMS: 5000
-        }).then((conn) => {
-            console.log('Connected to MongoDB');
-            mydb = conn.db(DB_NAME);
-           // start web server
-        })
-    }
+if (DB_TYPE == "mongodb") {
+    MongoClient.connect(DB_URL, {
+        connectTimeoutMS: 5000
+    }).then((conn) => {
+        console.log('Connected to MongoDB');
+        mydb = conn.db(DB_NAME);
+       // start web server
+    })
 }
 
 const app = express();
@@ -43,10 +40,12 @@ app.get('/', (req, res) => {
     console.log(config);
     res.send(config);
 });
+
 app.get('/submit', (req, res) => {
     res.sendFile(path.join(__dirname, '/views/form.html'));
 });
-app.post('/submitdb', (req, res) => {
+
+app.post('/submit', (req, res) => {
     var msg = {
         name: req.body.name,
         message: req.body.message
@@ -64,92 +63,8 @@ app.post('/submitdb', (req, res) => {
         },
     }
     console.log(metadata)
-
     if (mydb == null) {
-      res.send("database not available.");
-      return
-    }
 
-    mydb.collection('messages').insertOne(msg)
-    .then((smsg) => {
-        console.log('saved message', smsg);
-        mydb.collection('messages').find({}).toArray()
-        .then((results) => {
-            console.log('got results', results.length);
-            var renderText = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-            <title>${APP_TITLE}</title>
-            <style>
-              .header {
-                height: 40px;
-                padding: 20px 20px 0;
-                background: #e1e1e1;
-              }
-              .main-content {
-                height: 60vh;
-                padding: 20px;
-              }
-              footer {
-                padding: 10px 20px;
-                background: #666;
-                color: white;
-              }
-              a {
-                color: #00aaff;
-              }
-            </style>
-            </head>
-              <body>
-              <div class="main-content">
-                <h2>
-                  Hi ${req.body.name},
-                </h2>
-                <p>
-                  Thanks for your message!
-                </p>
-                <p>
-                  Message: ${req.body.message}
-                </p>
-                <p>
-                  Time: ${currdatetime}
-                </p>
-                <p>
-                  Processed by: ${HOST}
-                </p>
-                <p>
-                  Number of messages: ${results.length}
-                </p>
-              </div>
-              <footer>
-                <p>${APP_TITLE} © ${HOST}. All rights reserved.</p>
-              </footer>
-              </body>
-              </html>
-            `;
-            res.send(renderText);
-        });
-    });
-});
-
-app.post('/submit', (req, res) => {
-    console.log({
-        name: req.body.name,
-        message: req.body.message
-    });
-    var currdatetime = new Date();
-    var metadata = {
-        host: HOST,
-        port: PORT,
-        date: currdatetime,
-        app: {
-            env: APP_VERSION,
-            version: APP_ENV,
-            title: APP_TITLE
-        },
-    }
-    console.log(metadata)
     var renderText = `
 <!DOCTYPE html>
       <html>
@@ -201,6 +116,73 @@ app.post('/submit', (req, res) => {
     `;
 
     res.send(renderText);
+    return
+    }
+
+    mydb.collection('messages').insertOne(msg)
+    .then((smsg) => {
+        console.log('saved message', smsg);
+        mydb.collection('messages').find({}).toArray()
+        .then((results) => {
+            console.log('got results', results.length);
+            var renderText = `
+            <!DOCTYPE html>
+            <html>
+            <head>
+            <title>${APP_TITLE}</title>
+            <style>
+              .header {
+                height: 40px;
+                padding: 20px 20px 0;
+                background: #e1e1e1;
+              }
+              .main-content {
+                height: 60vh;
+                padding: 20px;
+              }
+              footer {
+                padding: 10px 20px;
+                background: #666;
+                color: white;
+              }
+              a {
+                color: #00aaff;
+              }
+            </style>
+            </head>
+              <body>
+              <div class="main-content">
+                <h2>
+                  Hi ${req.body.name},
+                </h2>
+                <p>
+                  Thanks for your message!
+                </p>
+                <p>
+                  Message: ${req.body.message}
+                </p>
+                <p>
+                  Time: ${currdatetime}
+                </p>
+                <p>
+                  Processed by: ${HOST}
+                </p>
+                <p>
+                  Using database: ${DB_TYPE}
+                </p>
+                <p>
+                  Number of messages: ${results.length}
+                </p>
+              </div>
+              <footer>
+                <p>${APP_TITLE} © ${HOST}. All rights reserved.</p>
+              </footer>
+              </body>
+              </html>
+            `;
+            res.send(renderText);
+        });
+    });
 });
 
 app.listen(PORT, HOST, () => {
