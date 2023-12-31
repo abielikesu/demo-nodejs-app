@@ -1,5 +1,6 @@
 runtime: custom
 image: abielikesu/demo-back-end:latest
+buildimage: "Y"
 templates:
   - src: templates/config.j2
     dest: "config/{{ g_app_environment | default('dev') }}.json"
