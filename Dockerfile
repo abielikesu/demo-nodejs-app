@@ -1,7 +1,9 @@
 ARG NODE_VERSION=16
+ARG PORT=3032
 
 # Use Alpine Linux which has a smaller footprint
 FROM node:${NODE_VERSION}-alpine as node
+ARG PORT
 #
 # Development/Build Container
 #
