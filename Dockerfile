@@ -1,13 +1,12 @@
-ARG PORT=3032
+ARG NODE_VERSION=16
 
 # Use Alpine Linux which has a smaller footprint
-FROM node:16-alpine as node
-
+FROM node:${NODE_VERSION}-alpine as node
 #
 # Development/Build Container
 #
 
-FROM node
+FROM node as final
 
 WORKDIR /app
 
@@ -19,7 +18,7 @@ RUN npm install
 COPY . .
 
 # Open desired port
-EXPOSE ${PORT}
+EXPOSE 3032
 
 # Dev entry point
 ENTRYPOINT ["npm", "run", "start"]
