@@ -1,0 +1,8 @@
+{
+    "dbtype": "{{ g_app_db_type | default('none') }}",
+{%- if g_app_db_type | default('none') != 'none' -%}
+    "dbname": "{{ g_app_db_name | default('demo') }}",
+    "dburl": "mongodb://{{ g_app_db_user | default('demo') }}:{{ g_app_db_password | default('demo') }}@{{ hostvars[groups["dbserver"][0]]["privateIp"]  }}:27017/{{ g_app_db_name | default('demo') }}?authSource=admin",
+{%- endif -%}
+    "env": "{{ g_app_environment | default('dev') }}"
+}

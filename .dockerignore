@@ -1,0 +1,9 @@
+node_modules/
+app/
+build/
+coverage/
+.git
+ascloud.*
+Dockerfile
+app.yml
+templates

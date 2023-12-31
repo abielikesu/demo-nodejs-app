@@ -1,0 +1,8 @@
+runtime: custom
+image: abielikesu/demo-back-end:latest
+templates:
+  - src: templates/config.j2
+    dest: "config/{{ g_app_environment | default('dev') }}.json"
+# configuration:
+  # - src: "config/{{ g_app_environment | default('dev') }}.json"
+    # dest: "config/{{ g_app_environment | default('dev') }}.json"

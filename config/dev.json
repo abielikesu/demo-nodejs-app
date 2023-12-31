@@ -1,4 +1,4 @@
 {
     "env": "dev",
-    "dbtype": "mongodb"
+    "dbtype": "none"
 }
