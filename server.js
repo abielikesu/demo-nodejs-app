@@ -9,6 +9,7 @@ console.log(config);
 
 var HOST   = config.host;
 var PORT   = config.port;
+var BASE_PATH   = config.base_path;
 var APP_ENV = config.env;
 var APP_VERSION   = config.version;
 var APP_TITLE   = config.title;
@@ -36,16 +37,20 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get('/', (req, res) => {
+    res.send('Use BASE_PATH: ' + BASE_PATH);
+});
+
+app.get(BASE_PATH + '/', (req, res) => {
     //res.send('Hello from App Engine!');
     console.log(config);
     res.send(config);
 });
 
-app.get('/submit', (req, res) => {
+app.get(BASE_PATH + '/submit', (req, res) => {
     res.sendFile(path.join(__dirname, '/views/form.html'));
 });
 
-app.post('/submit', (req, res) => {
+app.post(BASE_PATH + '/submit', (req, res) => {
     var msg = {
         name: req.body.name,
         message: req.body.message

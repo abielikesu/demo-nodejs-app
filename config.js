@@ -4,7 +4,7 @@ const convict = require('convict');
 const config = convict({
     host: {
         format: String,
-        default: 'localhost',
+        default: '0.0.0.0',
         arg: 'host',
         env: 'HOST'
     },
@@ -13,6 +13,12 @@ const config = convict({
         default: '3031',
         arg: 'port',
         env: 'PORT'
+    },
+    base_path: {
+        format: String,
+        default: '/api',
+        arg: 'base_path',
+        env: 'BASE_PATH'
     },
     env: {
         format: ['prod', 'dev', 'test', 'qa'],
