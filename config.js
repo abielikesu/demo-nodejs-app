@@ -10,7 +10,7 @@ const config = convict({
     },
     port: {
         format: String,
-        default: '3032',
+        default: '3031',
         arg: 'port',
         env: 'PORT'
     },
